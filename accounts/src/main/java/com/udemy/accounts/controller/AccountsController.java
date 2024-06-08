@@ -1,6 +1,7 @@
 package com.udemy.accounts.controller;
 
 import com.udemy.accounts.constants.AccountsConstants;
+import com.udemy.accounts.dto.AccountsContactInfoDTO;
 import com.udemy.accounts.dto.CustomerDTO;
 import com.udemy.accounts.dto.ErrorResponseDTO;
 import com.udemy.accounts.dto.ResponseDTO;
@@ -13,7 +14,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +35,25 @@ import org.springframework.web.bind.annotation.*;
 )
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
+//@AllArgsConstructor
 @Validated
 public class AccountsController {
 
-    private IAccountsService iaccountsService;
+    private final IAccountsService iaccountsService;
+
+    public AccountsController(IAccountsService iaccountsService) {
+        this.iaccountsService = iaccountsService;
+    }
+
+    @Value("${build.version}")
+    private String buildVersion;
+
+    @Autowired
+    private Environment environment;
+
+    @Autowired
+    private AccountsContactInfoDTO accountsContactInfoDTO;
+
 
     @Operation(
             summary = "Create Account REST API",
@@ -162,5 +179,24 @@ public class AccountsController {
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDTO(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @Operation(
+            summary = "Get Build information",
+            description = "Get Build information that is deployed into accounts microservice"
+    )
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildVersion() {
+        return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+    }
+
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountsContactInfoDTO> getContactInfo() {
+        return ResponseEntity.status(HttpStatus.OK).body(accountsContactInfoDTO);
     }
 }
