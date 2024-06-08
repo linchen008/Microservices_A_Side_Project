@@ -54,7 +54,6 @@ public class AccountsController {
     @Autowired
     private AccountsContactInfoDTO accountsContactInfoDTO;
 
-
     @Operation(
             summary = "Create Account REST API",
             description = "REST API to create new Customer & Account inside Lin's Bank"
@@ -196,7 +195,11 @@ public class AccountsController {
     }
 
     @GetMapping("/contact-info")
-    public ResponseEntity<AccountsContactInfoDTO> getContactInfo() {
-        return ResponseEntity.status(HttpStatus.OK).body(accountsContactInfoDTO);
+    public ResponseEntity<AccountsContactInfoDTO> getContactInfo(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountsContactInfoDTO);
     }
+
+
 }
