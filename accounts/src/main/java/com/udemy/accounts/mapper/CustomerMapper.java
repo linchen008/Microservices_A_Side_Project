@@ -1,6 +1,7 @@
 package com.udemy.accounts.mapper;
 
 import com.udemy.accounts.dto.CustomerDTO;
+import com.udemy.accounts.dto.CustomerDetailsDTO;
 import com.udemy.accounts.entity.Customer;
 
 /**
@@ -22,5 +23,12 @@ public class CustomerMapper {
         customer.setEmail(customerDTO.getEmail());
         customer.setMobileNumber(customerDTO.getMobileNumber());
         return customer;
+    }
+
+    public static CustomerDetailsDTO mapToCustomerDetailsDTO(Customer customer, CustomerDetailsDTO customerDetailsDTO) {
+        customerDetailsDTO.setName(customer.getName());
+        customerDetailsDTO.setEmail(customer.getEmail());
+        customerDetailsDTO.setMobileNumber(customer.getMobileNumber());
+        return customerDetailsDTO;
     }
 }

@@ -36,11 +36,15 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -105,7 +109,7 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>3.4.3</version>
                 <configuration>
-                    <to><image>tomastin/${project.artifactId}:s6</image></to>
+                    <to><image>tomastin/${project.artifactId}:s8</image></to>
                     <from>
                         <platforms>
                             <platform>
