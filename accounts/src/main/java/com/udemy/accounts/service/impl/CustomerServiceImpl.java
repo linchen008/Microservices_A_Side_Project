@@ -35,10 +35,11 @@ public class CustomerServiceImpl implements ICustomerService {
 
     /**
      * @param mobileNumber
+     * @param correlationId - Correlation ID value generated at Edge server
      * @return
      */
     @Override
-    public CustomerDetailsDTO fetchCustomerDetails(String mobileNumber) {
+    public CustomerDetailsDTO fetchCustomerDetails(String mobileNumber,String correlationId) {
         //TODO: 1.find the customer info
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
                 ()-> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
@@ -55,17 +56,19 @@ public class CustomerServiceImpl implements ICustomerService {
         //TODO: 4.wave the accountDTO into customerDetailsDTO
         customerDetailsDTO.setAccountsDTO(AccountsMapper.mapToAccountsDTO(accounts,new AccountsDTO()));
 
+        //--------------OpenFeign + Load Balancer----------------------------------------------------------
         //TODO: 5.wave the CardDTO details into customerDetailsDTO
         //5.1 invoke OpenFeign API provided by Loans Microservice
-        ResponseEntity<LoansDTO> loansDTOResponseEntity = loansFeignClient.fetchLoanDetails(mobileNumber);
+        ResponseEntity<LoansDTO> loansDTOResponseEntity = loansFeignClient.fetchLoanDetails(correlationId, mobileNumber);
         //5.2 wave the LoanDTO details to customerDTO
         customerDetailsDTO.setLoansDTO(loansDTOResponseEntity.getBody());
 
         //TODO: 6.wave the cardDTO into customerDetailsDTO
         //6.1 invoke OpenFeign API provided by Cards Microservice
-        ResponseEntity<CardsDTO> cardsDTOResponseEntity = cardsFeignClient.fetchCardDetails(mobileNumber);
+        ResponseEntity<CardsDTO> cardsDTOResponseEntity = cardsFeignClient.fetchCardDetails(correlationId, mobileNumber);
         //6.2 wave the CardDTO into customerDetailsDTO
         customerDetailsDTO.setCardsDTO(cardsDTOResponseEntity.getBody());
+        //--------------OpenFeign + Load Balancer----------------------------------------------------------
 
         return customerDetailsDTO;
     }

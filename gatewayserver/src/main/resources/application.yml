@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: "gatewayserver"
+
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # Flag that enables DiscoveryClient gateway integration.
+          lower-case-service-id: true # Option to lower case serviceId in predicates and filters, defaults to false. Useful with eureka when it automatically uppercases serviceId. so MYSERIVCE, would match /myservice/**
+#      routes:
+#        - id: accounts_route
+#          uri: lb://ACCOUNTS
+#          predicates:
+#            - Path=/linsbank/accounts/**
+#          filters:
+#            - RewritePath=/linsbank/accounts/(?<segment>.*), /$\{segment}
+#            - AddResponseHeader=X-Response-Time, '${java.time.LocalDateTime.now()}' //todo: !!!!!!can not get time with this expression, use Method2!!!!!!!
+#
+#        - id: loans_route
+#          uri: lb://LOANS
+#          predicates:
+#            - Path=/linsbank/loans/**
+#          filters:
+#            - RewritePath=/linsbank/loans/(?<segment>.*), /$\{segment}
+#            - AddResponseHeader=X-Response-Time, '${java.time.LocalDateTime.now()}'
+#
+#        - id: cards_route
+#          uri: lb://CARDS
+#          predicates:
+#            - Path=/linsbank/cards/**
+#          filters:
+#            - RewritePath=/linsbank/cards/(?<segment>.*), /$\{segment}
+#            - AddResponseHeader=X-Response-Time, '${java.time.LocalDateTime.now()}'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: "gatewayserver"
+    description: "Lin's Bank Gateway server Application"
+    version: "1.0.0"
+
+logging:
+  level:
+    com:
+      udemy:
+        gatewayserver: debug

@@ -13,7 +13,8 @@ public interface ICustomerService {
     /**
      *
      * @param mobileNumber
-     * @return
+     @param correlationId - Correlation ID value generated at Edge server
+     @return Customer Details based on a given mobileNumber
      */
-    CustomerDetailsDTO fetchCustomerDetails(String mobileNumber);
+    CustomerDetailsDTO fetchCustomerDetails(String mobileNumber, String correlationId);
 }

@@ -23,33 +23,48 @@ spring:
       ddl-auto: update
     show-sql: true
 
+# This setting controls which Actuator endpoints are exposed over HTTP.
 management:
   endpoints:
     web:
       exposure:
-        include: "*"
-  endpoint:
-    shutdown:
+        include: "*" # exposes all available Actuator endpoints
+  health: # Purpose: These settings enable the readiness and liveness probes for the health endpoint.
+    readiness-state: # Indicates whether the application is ready to handle traffic.
       enabled: true
-  info:
-    env:
+    liveness-state: # Indicates whether the application is alive (i.e., running properly).
+      enabled: true
+  endpoint:
+    shutdown: # This setting enables the /shutdown endpoint.
+      enabled: true # Allows the application to be gracefully shut down via an HTTP request.
+    health: # This setting includes readiness and liveness probes in the health endpoint response.
+      probes: # Provide detailed health information
+        enabled: true
+  info: # This setting includes environment information in the /info endpoint.
+    env: # Provides details about the current environment, such as system properties and environment variables.
       enabled: true
 
-endpoints:
-  shutdown:
+endpoints: # This is another way to ensure the /shutdown endpoint is enabled, offering redundancy with management.endpoint.shutdown.enabled.
+  shutdown: # Enables a way to trigger a graceful shutdown of the application via an HTTP request.
     enabled: true
 
-eureka:
+eureka: # Eureka configuration
   instance:
-    preferIpAddress: true
-  client:
-    fetchRegistry: true
-    registerWithEureka: true
+    prefer-ip-address: true # using IP address instead of hostname
+  client: # governing how the client interacts with the Eureka server.
+    fetch-registry: true # Enables the client to fetch the registry information from the Eureka server.
+    register-with-eureka: true # Registers the client application itself with the Eureka server. This allows the application to be discoverable by other services.
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 
 info:
   app:
-    name: "loans"
-    description: "Lin's Bank Loans Application"
+    name: "accounts"
+    description: "Lin's Bank Loans APP"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      udemy:
+        accounts: debug
