@@ -15,6 +15,7 @@ import com.udemy.accounts.service.ICustomerService;
 import com.udemy.accounts.service.client.CardsFeignClient;
 import com.udemy.accounts.service.client.LoansFeignClient;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,9 @@ public class CustomerServiceImpl implements ICustomerService {
 
     private AccountsRepository accountsRepository;
     private CustomerRepository customerRepository;
+    @Qualifier("com.udemy.accounts.service.client.CardsFeignClient")
     private CardsFeignClient cardsFeignClient;
+    @Qualifier("com.udemy.accounts.service.client.LoansFeignClient")
     private LoansFeignClient loansFeignClient;
 
     /**
@@ -61,13 +64,17 @@ public class CustomerServiceImpl implements ICustomerService {
         //5.1 invoke OpenFeign API provided by Loans Microservice
         ResponseEntity<LoansDTO> loansDTOResponseEntity = loansFeignClient.fetchLoanDetails(correlationId, mobileNumber);
         //5.2 wave the LoanDTO details to customerDTO
-        customerDetailsDTO.setLoansDTO(loansDTOResponseEntity.getBody());
+        if (null != loansDTOResponseEntity) {
+            customerDetailsDTO.setLoansDTO(loansDTOResponseEntity.getBody());
+        }
 
         //TODO: 6.wave the cardDTO into customerDetailsDTO
         //6.1 invoke OpenFeign API provided by Cards Microservice
         ResponseEntity<CardsDTO> cardsDTOResponseEntity = cardsFeignClient.fetchCardDetails(correlationId, mobileNumber);
         //6.2 wave the CardDTO into customerDetailsDTO
-        customerDetailsDTO.setCardsDTO(cardsDTOResponseEntity.getBody());
+        if (null != cardsDTOResponseEntity) {
+            customerDetailsDTO.setCardsDTO(cardsDTOResponseEntity.getBody());
+        }
         //--------------OpenFeign + Load Balancer----------------------------------------------------------
 
         return customerDetailsDTO;

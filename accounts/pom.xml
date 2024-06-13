@@ -36,6 +36,10 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
@@ -109,7 +113,7 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>3.4.3</version>
                 <configuration>
-                    <to><image>tomastin/${project.artifactId}:s9</image></to>
+                    <to><image>tomastin/${project.artifactId}:s10</image></to>
                     <from>
                         <platforms>
                             <platform>

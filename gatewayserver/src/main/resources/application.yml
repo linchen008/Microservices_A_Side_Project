@@ -11,6 +11,17 @@ spring:
         locator:
           enabled: true # Flag that enables DiscoveryClient gateway integration.
           lower-case-service-id: true # Option to lower case serviceId in predicates and filters, defaults to false. Useful with eureka when it automatically uppercases serviceId. so MYSERIVCE, would match /myservice/**
+      httpclient:
+        connect-timeout: 1000 # 1 second
+        response-timeout: 2s
+
+  data:
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 6379
+      timeout: 1s
+
 #      routes:
 #        - id: accounts_route
 #          uri: lb://ACCOUNTS
@@ -35,6 +46,15 @@ spring:
 #          filters:
 #            - RewritePath=/linsbank/cards/(?<segment>.*), /$\{segment}
 #            - AddResponseHeader=X-Response-Time, '${java.time.LocalDateTime.now()}'
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      sliding-window-size: 10
+      permitted-number-of-calls-in-half-open-state: 2
+      failure-rate-threshold: 50
+      wait-duration-in-open-state:
+        seconds: 10
 
 management:
   endpoints:
