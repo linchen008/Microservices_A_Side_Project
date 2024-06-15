@@ -77,6 +77,10 @@ management:
     env: # Provides details about the current environment, such as system properties and environment variables.
       enabled: true
 
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
 #endpoints: # This is another way to ensure the /shutdown endpoint is enabled, offering redundancy with management.endpoint.shutdown.enabled.
 #  shutdown: # Enables a way to trigger a graceful shutdown of the application via an HTTP request.
 #    enabled: true
@@ -101,3 +105,5 @@ logging:
     com:
       udemy:
         accounts: debug
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
