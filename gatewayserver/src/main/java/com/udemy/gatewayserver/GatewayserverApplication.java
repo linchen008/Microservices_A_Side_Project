@@ -8,11 +8,9 @@ import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
-import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -28,7 +26,7 @@ public class GatewayserverApplication {
     //Method 1: config Gateway use "application.yml"() //todo: !!!!!!can not get time with this expression, use Method2!!!!!!!
     //Method 2: config Gateway use Java ConfigClass(active)
     @Bean
-    public RouteLocator linsBankRouteConfig(RouteLocatorBuilder builder, RedisRateLimiter redisRateLimiter) {
+    public RouteLocator linsBankRouteConfig(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(p -> p
                         .path("/linsbank/accounts/**")
@@ -46,10 +44,9 @@ public class GatewayserverApplication {
                         .path("/linsbank/loans/**")
                         .filters(f -> f
                                 //TODO: retry Method in Gateway
-                                .retry(retryConfig -> retryConfig.setRetries(3)
-                                        .setMethods(HttpMethod.GET)
+//                                .retry(retryConfig -> retryConfig.setRetries(3)
+//                                        .setMethods(HttpMethod.GET)
                                         //.setBackoff(Duration.ofMinutes(100), Duration.ofMillis(1000), 2, true)
-                                )
 
                                 .rewritePath("/linsbank/loans/(?<segment>.*)", "/${segment}")
                                 .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
@@ -59,8 +56,8 @@ public class GatewayserverApplication {
                         .path("/linsbank/cards/**")
                         .filters(f -> f
                                 //TODO: rateLimit
-                                .requestRateLimiter(config -> config.setRateLimiter(redisRateLimiter())
-                                        .setKeyResolver(userKeyResolver()))
+//                                .requestRateLimiter(config -> config.setRateLimiter(redisRateLimiter())
+//                                        .setKeyResolver(userKeyResolver()))
 
                                 .rewritePath("/linsbank/cards/(?<segment>.*)", "/${segment}")
                                 .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
@@ -69,10 +66,10 @@ public class GatewayserverApplication {
                 .build();
     }
 
-    @Bean
-    public RedisRateLimiter redisRateLimiter() {
-        return new RedisRateLimiter(1, 1, 1);
-    }
+//    @Bean
+//    public RedisRateLimiter redisRateLimiter() {
+//        return new RedisRateLimiter(1, 1, 1);
+//    }
 
     @Bean
     KeyResolver userKeyResolver() {

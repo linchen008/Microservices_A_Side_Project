@@ -10,8 +10,10 @@ services:
       resources:
         limits:
           memory: 800m
+    volumes:
+      - /Users/Tommy/Java_Learn/Udemy-Microservice/opentelemetry-javaagent.jar:/opt/opentelemetry-javaagent.jar
     environment:
-      JAVA_TOOL_OPTIONS: "-javaagent:default/opentelemetry-javaagent.jar"
+      JAVA_TOOL_OPTIONS: "-javaagent:/opt/opentelemetry-javaagent.jar"
       OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
       OTEL_METRICS_EXPORTER: none
 

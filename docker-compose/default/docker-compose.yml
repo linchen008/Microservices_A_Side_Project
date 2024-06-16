@@ -1,15 +1,28 @@
 services:
-  redis:
-    image: redis
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
     ports:
-      - "6379:6379"
-    healthcheck:
-      test: ["CMD-SHELL","redis-cli ping | grep PONG"]
-      timeout: 10s
-      retries: 10
+      - "7080:8080"
+    environment:
+      KEYCLOAK_ADMIN: "admin"
+      KEYCLOAK_ADMIN_PASSWORD: "admin"
+    command: "start-dev"
     extends:
       file: common-config.yml
       service: network-deploy-service
+
+#  redis:
+#    image: redis
+#    ports:
+#      - "6379:6379"
+#    healthcheck:
+#      test: ["CMD-SHELL","redis-cli ping | grep PONG"]
+#      timeout: 10s
+#      retries: 10
+#    extends:
+#      file: common-config.yml
+#      service: network-deploy-service
     
   read:
     image: grafana/loki:3.0.0
@@ -267,19 +280,17 @@ services:
   accounts:
     image: "tomastin/accounts:s11"
     container_name: accounts-ms
-    ports:
-      - "8080:8080"
-    depends_on:
-      configserver:
-        condition: service_healthy
-      eurekaserver:
-        condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 10s
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "accounts"
       OTEL_SERVICE_NAME: "accounts"
@@ -290,8 +301,6 @@ services:
   loans:
     image: "tomastin/loans:s11"
     container_name: loans-ms
-    ports:
-      - "8090:8090"
     depends_on:
       configserver:
         condition: service_healthy
@@ -313,8 +322,6 @@ services:
   cards:
     image: "tomastin/cards:s11"
     container_name: cards-ms
-    ports:
-      - "9000:9000"
     depends_on:
       configserver:
         condition: service_healthy
@@ -345,15 +352,15 @@ services:
         condition: service_healthy
       cards:
         condition: service_healthy
-      redis:
-        condition: service_healthy
+#      redis:
+#        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "gatewayserver"
       OTEL_SERVICE_NAME: "gatewayserver"
-      SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
-      SPRING_DATA_REDIS_TIMEOUT: 1s
+#      SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
+#      SPRING_DATA_REDIS_HOST: redis
+#      SPRING_DATA_REDIS_PORT: 6379
+#      SPRING_DATA_REDIS_TIMEOUT: 1s
     extends:
       file: common-config.yml
       service: microservice-eureka-config
