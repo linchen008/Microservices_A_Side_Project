@@ -4,7 +4,6 @@ server:
 spring:
   application:
     name: "accounts"
-
   profiles:
     active: "prod"
   config:
@@ -28,6 +27,14 @@ spring:
     openfeign:
       circuitbreaker:
         enabled: true
+    function:
+      definition: updateCommunication
+    stream:
+      bindings:
+        sendCommunication-out-0: # send message to MQ for Msg App sending Email/SMS to customer
+          destination: send-communication
+        updateCommunication-in-0: # get message from MQ sent by
+          destination: communication-sent
 
 resilience4j:
   circuitbreaker:
@@ -77,9 +84,9 @@ management:
     env: # Provides details about the current environment, such as system properties and environment variables.
       enabled: true
 
-  metrics:
-    tags:
-      application: ${spring.application.name}
+#  metrics:
+#    tags:
+#      application: ${spring.application.name}
 
 #endpoints: # This is another way to ensure the /shutdown endpoint is enabled, offering redundancy with management.endpoint.shutdown.enabled.
 #  shutdown: # Enables a way to trigger a graceful shutdown of the application via an HTTP request.
@@ -105,5 +112,5 @@ logging:
     com:
       udemy:
         accounts: debug
-  pattern:
-    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+#  pattern:
+#    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"

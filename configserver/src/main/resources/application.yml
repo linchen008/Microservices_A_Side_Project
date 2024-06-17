@@ -35,13 +35,13 @@ management:
       probes:
         enabled: true
 
-  metrics:
-    tags:
-      application: ${spring.application.name}
+#  metrics:
+#    tags:
+#      application: ${spring.application.name}
 
 encrypt:
   key: "45D81EC1EF61DF9AD8D3E5BB397F9"
 
-logging:
-  pattern:
-    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+#logging:
+#  pattern:
+#    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
