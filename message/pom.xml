@@ -26,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+            <artifactId>spring-cloud-stream-binder-kafka</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -68,7 +68,7 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>3.4.3</version>
                 <configuration>
-                    <to><image>tomastin/${project.artifactId}:s13</image></to>
+                    <to><image>tomastin/${project.artifactId}:s14</image></to>
                     <from>
                         <platforms>
                             <platform>

@@ -35,6 +35,17 @@ spring:
           destination: send-communication
         updateCommunication-in-0: # get message from MQ sent by
           destination: communication-sent
+      kafka: # using kafka instead of rabbitMQ
+        binder:
+          brokers:
+            - localhost:9092
+
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+#    connection-timeout: 10s
 
 resilience4j:
   circuitbreaker:
