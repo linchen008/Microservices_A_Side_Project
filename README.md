@@ -22,9 +22,17 @@ A side project mock with Udemy Course:
 - Spring Cloud Config + Bus
 - Consul
 - Nacos
-### 7. Distributed Transaction
-- Seata
-### 8. Docker & K8s
+### 7. Microservice Security
+- OAuth2.0
+- OpenID Connect
+- KeyCloak
+### 8. Event Driven
+- RabbitMQ, Kafka
+- Spring Cloud Function
+- Spring Cloud Stream
+### 9. Docker & K8s
 - SpringBoot: Docker Image
 - Docker Compose
 - K8s
+### 10. Distributed Transaction
+- Seata
