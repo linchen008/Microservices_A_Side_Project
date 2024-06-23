@@ -5,13 +5,13 @@ A side project mock with Udemy Course:
 ### 1. Sevice Register & Discovery
 - Consul
 - Eureka
-- Nacos
+- Nacos(Alibaba)
 ### 2. Calling & Load Balancing
 - OpenFeign
 - Spring Cloud Load Balancer
 ### 3. Meltdown & Downgrade
 - Resilience4J
-- Sentinel
+- Sentinel(Alibaba)
 ### 4. Gateway
 - Spring Cloud Gateway
 ### 5. Service Link Tracing
@@ -21,8 +21,9 @@ A side project mock with Udemy Course:
 ### 6. Configuration Management
 - Spring Cloud Config + Bus
 - Consul
-- Nacos
+- Nacos(Alibaba)
 ### 7. Microservice Security
+- Spring Security
 - OAuth2.0
 - OpenID Connect
 - KeyCloak
@@ -30,9 +31,11 @@ A side project mock with Udemy Course:
 - RabbitMQ, Kafka
 - Spring Cloud Function
 - Spring Cloud Stream
-### 9. Docker & K8s
+### 9. Docker
 - SpringBoot: Docker Image
 - Docker Compose
-- K8s
-### 10. Distributed Transaction
-- Seata
+### 10. Kubernetes
+- Helm
+- Istio
+### 11. Distributed Transaction
+- Seata(Alibaba)
