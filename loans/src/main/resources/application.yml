@@ -23,6 +23,11 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  cloud:
+    kubernetes:
+      discovery:
+        all-namespaces: true
+
 # This setting controls which Actuator endpoints are exposed over HTTP.
 management:
   endpoints:
@@ -44,18 +49,18 @@ management:
     env: # Provides details about the current environment, such as system properties and environment variables.
       enabled: true
 
-endpoints: # This is another way to ensure the /shutdown endpoint is enabled, offering redundancy with management.endpoint.shutdown.enabled.
-  shutdown: # Enables a way to trigger a graceful shutdown of the application via an HTTP request.
-    enabled: true
-
-eureka: # Eureka configuration
-  instance:
-    prefer-ip-address: true # using IP address instead of hostname
-  client: # governing how the client interacts with the Eureka server.
-    fetch-registry: true # Enables the client to fetch the registry information from the Eureka server.
-    register-with-eureka: true # Registers the client application itself with the Eureka server. This allows the application to be discoverable by other services.
-    serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
+#endpoints: # This is another way to ensure the /shutdown endpoint is enabled, offering redundancy with management.endpoint.shutdown.enabled.
+#  shutdown: # Enables a way to trigger a graceful shutdown of the application via an HTTP request.
+#    enabled: true
+#
+#eureka: # Eureka configuration
+#  instance:
+#    prefer-ip-address: true # using IP address instead of hostname
+#  client: # governing how the client interacts with the Eureka server.
+#    fetch-registry: true # Enables the client to fetch the registry information from the Eureka server.
+#    register-with-eureka: true # Registers the client application itself with the Eureka server. This allows the application to be discoverable by other services.
+#    serviceUrl:
+#      defaultZone: http://localhost:8070/eureka/
 
 info:
   app:

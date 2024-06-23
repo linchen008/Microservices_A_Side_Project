@@ -22,11 +22,11 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
+            <artifactId>spring-cloud-starter-kubernetes-discoveryclient</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -103,7 +103,7 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>3.4.3</version>
                 <configuration>
-                    <to><image>tomastin/${project.artifactId}:s13</image></to>
+                    <to><image>tomastin/${project.artifactId}:s17</image></to>
                     <from>
                         <platforms>
                             <platform>
